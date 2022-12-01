@@ -34,6 +34,8 @@ package net.ausiasmarch.wildcart.service;
 
 import java.util.List;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
+
 import net.ausiasmarch.wildcart.entity.CommentEntity;
 import net.ausiasmarch.wildcart.entity.ProductoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -210,5 +212,26 @@ public class CommentService {
     private String generateWord() {
         return WORDS[RandomHelper.getRandomInt(0, WORDS.length - 1)].toLowerCase();
     }
+
+    @Transactional
+    public Long create(CommentEntity oCommentEntity) {
+        oCommentEntity.setId(null);
+        oProductoService.validate(oCommentEntity.getProducto().getId());
+        oCommentEntity.setProducto(oProductoService.get(oCommentEntity.getProducto().getId()));
+        oUsuarioService.validate(oCommentEntity.getUsuario().getId());
+        oCommentEntity.setUsuario(oUsuarioService.get(oCommentEntity.getUsuario().getId()));
+        return oCommentRepository.save(oCommentEntity).getId();
+    }
+
+
+    @Transactional
+    public Long update(CommentEntity oCommentEntity) {
+        oProductoService.validate(oCommentEntity.getProducto().getId());
+        oCommentEntity.setProducto(oProductoService.get(oCommentEntity.getProducto().getId()));
+        oUsuarioService.validate(oCommentEntity.getUsuario().getId());
+        oCommentEntity.setUsuario(oUsuarioService.get(oCommentEntity.getUsuario().getId()));
+        return oCommentRepository.save(oCommentEntity).getId();
+    }
+
 
 }

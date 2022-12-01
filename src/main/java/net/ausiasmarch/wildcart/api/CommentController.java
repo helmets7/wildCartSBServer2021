@@ -47,6 +47,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
@@ -80,6 +82,17 @@ public class CommentController {
     @PostMapping("/generate")
     public ResponseEntity<Long> generateSome() {
         return new ResponseEntity<>(oCommentService.generateSome(), HttpStatus.OK);
+    }
+
+    
+    @PostMapping
+    public ResponseEntity<Long> create(@RequestBody CommentEntity CommentEntity) {
+        return new ResponseEntity<Long>(oCommentService.create(CommentEntity), HttpStatus.OK);
+    }
+
+    @PutMapping
+    public ResponseEntity<Long> update(@RequestBody CommentEntity CommentEntity) {
+        return new ResponseEntity<Long>(oCommentService.update(CommentEntity), HttpStatus.OK);
     }
 
 }
